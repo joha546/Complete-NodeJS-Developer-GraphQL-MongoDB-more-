@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "ae887c52-08b5-4b0f-b040-0af7859daccd",
+		"name": "Project-01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33727028",
+		"_collection_link": "https://www.postman.com/navigation-cosmonaut-91045637/workspace/postman-api-fundamentals-student-expert/collection/33727028-ae887c52-08b5-4b0f-b040-0af7859daccd?action=share&source=collection_link&creator=33727028"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/api/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "Md Khaled Bin",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Joha",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "joh60483@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						},
+						{
+							"key": "job_title",
+							"value": "Software Dev",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/users"
+			},
+			"response": []
+		}
+	]
+}
