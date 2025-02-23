@@ -1,12 +1,31 @@
 const express = require("express");
 const users = require("./MOCK_DATA.json");
 const fs = require("fs");
+const req = require("express/lib/request");
 
 const app = express();
 const PORT = 8000;
 
 // Since the body is giving undefined result. so we need to use MIDDLEWARE.
 app.use(express.urlencoded({extended : false}));
+
+// Custom middleware.
+app.use((req, res, next) => {
+    // console.log("Hello from Middleware 1.");
+
+    // we're getting the log info in log.txt
+    fs.appendFile('log.txt',
+        `${Date.now()}: ${req.path}: ${req.method}\n`,
+        (err, data) =>{
+            next();
+        }
+    )
+    next();
+});
+
+// app.use((req, res, next) => {
+//     return res.end("Hey buddy...");
+// });
 
 // for demonstration purpose.
 // app.get("/users", (req, res) => {
