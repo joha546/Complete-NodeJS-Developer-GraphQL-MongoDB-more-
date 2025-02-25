@@ -26,17 +26,17 @@
 					"urlencoded": [
 						{
 							"key": "first_name",
-							"value": "Md Khaled Bin",
+							"value": "Shimul",
 							"type": "text"
 						},
 						{
 							"key": "last_name",
-							"value": "Joha",
+							"value": "Ali",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "joh60483@gmail.com",
+							"value": "rezvy1001@gmail.com",
 							"type": "text"
 						},
 						{
@@ -46,12 +46,109 @@
 						},
 						{
 							"key": "job_title",
-							"value": "Software Dev",
+							"value": "Alu wala",
 							"type": "text"
 						}
 					]
 				},
 				"url": "http://localhost:8000/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/users/1000?first_name=John&last_name=Doe&email=john60545@gmail.com&gender=Male&job_title=Frontend Egineer",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "John",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Doe",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "john60545@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						},
+						{
+							"key": "job_title",
+							"value": "Frontend Engineer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users/1000?first_name=John&last_name=Doe&email=john60545@gmail.com&gender=Male&job_title=Frontend Egineer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"1000"
+					],
+					"query": [
+						{
+							"key": "first_name",
+							"value": "John"
+						},
+						{
+							"key": "last_name",
+							"value": "Doe"
+						},
+						{
+							"key": "email",
+							"value": "john60545@gmail.com"
+						},
+						{
+							"key": "gender",
+							"value": "Male"
+						},
+						{
+							"key": "job_title",
+							"value": "Frontend Egineer"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/users/67bd97f7b688c2db67f9f79b",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8000/api/users/67bd97f7b688c2db67f9f79b"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/users/67bd97f7b688c2db67f9f79b",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": "http://localhost:8000/api/users/67bd97f7b688c2db67f9f79b"
 			},
 			"response": []
 		}

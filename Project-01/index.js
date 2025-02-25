@@ -1,10 +1,45 @@
 const express = require("express");
-const users = require("./MOCK_DATA.json");
 const fs = require("fs");
+const mongoose = require("mongoose");
 const req = require("express/lib/request");
 
 const app = express();
 const PORT = 8000;
+
+// async and await must be written.
+
+// Connection of mongodb.
+mongoose.connect('mongodb://127.0.0.1:27017/youtube-app-1')
+.then(() => console.log("MngoDB connected"))
+.catch((err) => console.log("Mongo Error", err));
+
+// Schema
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    gender: {
+        type: String
+    },
+    jobTitle : {
+        type: String 
+    },
+
+}, 
+{ timestamps: true}
+);
+
+// create a model.
+const User = mongoose.model("user", userSchema);
 
 // Since the body is giving undefined result. so we need to use MIDDLEWARE.
 app.use(express.urlencoded({extended : false}));
@@ -20,7 +55,6 @@ app.use((req, res, next) => {
             next();
         }
     )
-    next();
 });
 
 // app.use((req, res, next) => {
@@ -28,69 +62,74 @@ app.use((req, res, next) => {
 // });
 
 // for demonstration purpose.
-// app.get("/users", (req, res) => {
-//     const html = `
-//     <ul>
-//         ${users.map((user) => `<li>${user.first_name}</li>`).join("")};
-//     </ul>
-//     `;
-//     res.send(html);
-// });
+app.get("/users", async(req, res) => {
+    const allUsers = await User.find({});
+    const html = `
+    <ul>
+        ${allUsers.map((user) => `<li>${user.firstName} - ${user.email}</li>`).join("")};
+    </ul>
+    `;
+    res.send(html);
+});
 
 
 // REST API Points.
-app.get("/api/users", (req, res) => {
-    return res.json(users);
+app.get("/api/users", async(req, res) => {
+    const allUser = await User.find({});
+
+    res.setHeader("X-MyName", "Joha");
+    // Always add X to custom headers.
+    return res.json(allUser);
 });
 
-app.get("/api/users/:id", (req, res) =>{
-    const id = Number(req.params.id);
-    const user = users.find((user) => user.id === id);
+app.get("/api/users/:id", async(req, res) =>{
+    const user = await User.findById(req.params.id);
+    if(!user){
+        return res.status(404).json({ error: "Not found the user."});
+    }
     return res.json(user);
 });
 
-app.post("/api/users", (req, res) => {
+app.post("/api/users", async(req, res) => {
     // TODO : Create a new User.
 
     const body = req.body;
-    // console.log(body);
-    users.push({...body, id : users.length +1});
-    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) =>{
-        return res.json({ status : "success", id : users.length});
-    })
 
+    if(!body ||
+        !body.first_name ||
+        !body.last_name ||
+        !body.email ||
+        !body.gender ||
+        !body.job_title
+    ){
+        return res.status(400).json({msg : "All fields are required."});
+    }
+    
+    // creating user.
+    const result = await User.create({
+        firstName: body.first_name,
+        lastName: body.last_name,
+        email: body.email,
+        gender: body.gender,
+        jobTitle: body.job_title
+    });
+
+    return res.status(201).json({msg: "success"});
 });
 
-app.patch("/api/users/:id", (req, res) => {
+app.patch("/api/users/:id", async(req, res) => {
     // TODO : Edit User.
 
     // find user by id.
-    const id = Number(req.params.id);
-    const userIndex = users.findIndex((user) => user.id === id);
-
-    if(userIndex === -1){
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    // this is for testing the rest api. 
-    // I haven't updated the MOCK_DATA.json yet.
-    users[userIndex] = { ...users[userIndex], ...req.body};
-
-    return res.json({ status : "Updated.", user : users[userIndex]});
+    const userbyId = await User.findByIdAndUpdate(req.params.id, {lastName : "Changed"});
+    return res.status(200).json({ status : "Updated."});
 });
 
-app.delete("/api/users/:id", (req, res) => {
+app.delete("/api/users/:id", async(req, res) => {
     // TODO : Delete User.
-    const id = Number(req.params.id);
-    const userIndex = users.findIndex((user) => user.id === id);
+    await User.findByIdAndDelete(req.params.id);
 
-    if(userIndex === -1){
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    users.splice(userIndex, 1);
-
-    return res.json({ status: "Deleted", remainingUsers: users });
+    return res.status(204).json({ status: "Deleted"});
 });
 
 // Grouping of route 
